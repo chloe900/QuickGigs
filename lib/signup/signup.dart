@@ -154,7 +154,6 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             ),
           ),
-          // House icon button at the top left corner
           Positioned(
             top: 16.0,
             left: 16.0,
