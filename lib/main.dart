@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'signup/signup.dart';
 import 'signup/signin.dart';
+import 'misc_functions.dart';
 
 
 void main() {
@@ -56,6 +57,10 @@ class LandingPage extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
+               ContactUs.launchEmail(
+                email: 'chloetdube@gmail.com',
+                subject: 'Contact Us Inquiry',
+              );
               
             },
             child: Text('Contact', style: TextStyle(color: Colors.white)),
