@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:quick_gigs/payment/payment.dart';
-//import 'package:quick_gigs/payment/payment.dart';
 import 'signup/signup.dart';
 import 'signup/signin.dart';
 import 'misc_functions.dart';

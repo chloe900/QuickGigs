@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:quick_gigs/misc_functions.dart';
 
 class Payment extends StatefulWidget {
   @override
   _PaymentIntegrationState createState() => _PaymentIntegrationState();
 }
 
+  
+
+
 class _PaymentIntegrationState extends State<Payment> {
+  String _selectedPaymentMethod = '';
+
+  void _onPaymentMethodChanged(String method) {
+    setState(() {
+      _selectedPaymentMethod = method;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,87 +27,114 @@ class _PaymentIntegrationState extends State<Payment> {
           style: TextStyle(fontFamily: 'Nunito'),
         ),
       ),
-      backgroundColor: Color.fromARGB(255, 235, 246, 235),
-      body: Center( // Center to align horizontally
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(height: 30.0),
-            Expanded(
-              child: Section(
-                title: 'Credit or Debit Card',
-                color: const Color(0xFF6b8c42),
-                content: '.',
-              ),
-            ),
-            Expanded(
-              child: Section(
-                title: 'Apple Pay',
-                color: const Color(0xFF6b8c42),
-                content: '.',
-              ),
-            ),
-            Expanded(
-              child: Section(
-                title: 'Google Pay',
-                color: const Color(0xFF6b8c42),
-                content: '.',
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+      body: Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'images/payment.png',
+                        width: 500,
+                        height: 500,
+                      ),
+                      SizedBox(height: 10),
+                      Text('Online Payments', style: TextStyle(fontSize: 34)),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Container(
+                      width: 300,
+                      height: 500,
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Color(0xFF4CAF50).withOpacity(0.2), // Background color
+                        borderRadius: BorderRadius.circular(12), // Rounded corners
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(0xFF4CAF50).withOpacity(0.2),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 3), // Shadow position
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max, // Make column size minimal
+                        mainAxisAlignment: MainAxisAlignment.center, // Center contents vertically
+                        
+                        children: [
+                          Text('Select payment method', style: TextStyle(color: Colors.brown, fontSize: 25)),
+                          SizedBox(height: 40),
+                           CheckboxListTile(
+                            title: Text('Credit or Debit Card'),
+                            value: _selectedPaymentMethod == 'Credit or Debit Card',
+                            activeColor: Colors.brown, // Change the active color
+                            checkColor: Colors.white, // Change the check (tick) color
+                            onChanged: (bool? value) {
+                              if (value != null && value) {
+                                _onPaymentMethodChanged('Credit or Debit Card');
+                              }
+                              
+                            },
+                            
+                            
+                          ),
+                         
 
+                          
+                          SizedBox(height: 30),
+                           CheckboxListTile(
+                            title: Text('Apple Pay'),
+                            value: _selectedPaymentMethod == 'Apple Pay',
+                            activeColor: Colors.brown, // Change the active color
+                            checkColor: Colors.white,
+                            onChanged: (bool? value) {
+                              if (value != null && value) {
+                                _onPaymentMethodChanged('Apple Pay');
+                              }
+                            },
+                          ),
+                          
+                          SizedBox(height:30),
 
-class Section extends StatelessWidget {
-  final String title;
-  final Color color;
-  final String content;
-
-  Section({
-    required this.title,
-    required this.color,
-    required this.content,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return FractionallySizedBox(
-      widthFactor: 1 / 3,
-      heightFactor: 1/2,
-      child: Container(
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(16.0), // Change radius of corners
-        ),
-        padding: EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-              textAlign: TextAlign.center,
+                           CheckboxListTile(
+                            title: Text('Google Pay'),
+                            value: _selectedPaymentMethod == 'Google Pay',
+                            activeColor: Colors.brown, // Change the active color
+                            checkColor: Colors.white,
+                            onChanged: (bool? value) {
+                              if (value != null && value) {
+                                _onPaymentMethodChanged('Google Pay');
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            SizedBox(height: 10),
-            Text(
-              content,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.black,
-              ),
-              textAlign: TextAlign.center,
+          ),
+          Positioned(
+            top: 16.0,
+            left: 16.0,
+            child: IconButton(
+              icon: Icon(Icons.house, color: Colors.brown),
+              onPressed: () {
+                Navigator.pop(context); // Navigate to the main landing page
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
