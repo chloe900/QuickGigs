@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:quick_gigs/payment/payment.dart';
 import 'signup/signup.dart';
 import 'signup/signin.dart';
+import 'payment/payment.dart';
 
 
 void main() {
@@ -14,8 +16,9 @@ class MyApp extends StatelessWidget {
       title: 'Landing Page Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        fontFamily: 'Nunito', // Set default font family
       ),
-      home: LandingPage(), // Set the landing page as the home screen
+      home: Payment(), // Set the landing page as the home screen
     );
   }
 }
