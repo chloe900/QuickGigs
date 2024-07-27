@@ -178,55 +178,318 @@ class _ListingPageState extends State<ListingPage> {
           ),
         ],
       ),
-      body: Row(
-        children: <Widget>[
-          Expanded(
-            flex: 4,
-            child: Container(
-              color: AppColors.yellow,
-              child: Center(child: Text('Some Content', style: TextStyle(color: Colors.white))),
+      body: FractionallySizedBox(
+        widthFactor: 1.0,
+        heightFactor: 1.0,
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              flex: 4,
+              child: Container(
+                color: AppColors.lightGreen,
+                alignment: Alignment.topLeft,
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: totalContainers + 6, // Plus six for the heading, recommendation, two paddings, sized box, and extra padding
+                        itemBuilder: (context, index) {
+                          if (index == 0) {
+                            // "Find your next job" text
+                            return Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Text(
+                                'Find your next job',
+                                style: TextStyle(
+                                  color: AppColors.textBlack,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 30,
+                                ),
+                              ),
+                            );
+                          }
+
+                          if (index == containersBeforeRecommendation + 1) {
+                            // "Recommendation" text
+                            return Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Text(
+                                'Recommendation',
+                                style: TextStyle(
+                                  color: AppColors.textBlack,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 30,
+                                ),
+                              ),
+                            );
+                          }
+
+                          if (index == containersBeforeRecommendation + containersAfterRecommendation + 2) {
+                            // SizedBox between highlighted and non-highlighted containers
+                            return SizedBox(height: 50.0);
+                          }
+
+                          if (index > containersBeforeRecommendation &&
+                              index <= containersBeforeRecommendation + containersAfterRecommendation + 1) {
+                            // Highlighted containers after recommendation
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: 16.0, // Space between containers
+                                left: 16.0,  // Left padding
+                                right: 16.0, // Right padding
+                              ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  _showJobDetails(
+                                    context,
+                                    'Job Title ${index + 1 - containersBeforeRecommendation}', // Job title
+                                    'Employer Username', // Placeholder for employer username
+                                    'R10/hr', // Placeholder for rate per hour
+                                    '2 hours', // Placeholder for hours
+                                    'Job description goes here.', // Placeholder for description
+                                    'Location', // Placeholder for location
+                                  );
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(12.0),
+                                  width: double.infinity,
+                                  height: 100.0, // Set height to 100
+                                  decoration: BoxDecoration(
+                                    color: AppColors.brown, // Changed color to brown
+                                    borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.5),
+                                        spreadRadius: 2,
+                                        blurRadius: 8,
+                                        offset: Offset(0, 4), // changes position of shadow
+                                      ),
+                                    ],
+                                  ),
+                                  child: Stack(
+                                    children: <Widget>[
+                                      Positioned(
+                                        top: 0,
+                                        left: 0,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                              'Job Title ${index + 1 - containersBeforeRecommendation}', // Job title
+                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
+                                            ),
+                                            SizedBox(height: 4.0),
+                                            Text(
+                                              'Employer Username', // Placeholder for employer username
+                                              style: TextStyle(color: Colors.white),
+                                            ),
+                                            SizedBox(height: 4.0),
+                                            Text(
+                                              'Location', // Placeholder for location
+                                              style: TextStyle(color: Colors.white),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Positioned(
+                                        right: 0,
+                                        top: 0,
+                                        child: Text(
+                                          'Wage: R10/hr', // Placeholder for wage per hour
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+
+                          if (index > containersBeforeRecommendation + containersAfterRecommendation + 2 &&
+                              index <= containersBeforeRecommendation + containersAfterRecommendation + containersAfterHighlighted + 3) {
+                            // Non-highlighted containers after highlighted boxes
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: 16.0, // Space between containers
+                                left: 16.0,  // Left padding
+                                right: 16.0, // Right padding
+                              ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  _showJobDetails(
+                                    context,
+                                    'Job Title ${index + 1 - containersBeforeRecommendation - containersAfterRecommendation - 2}', // Job title
+                                    'Employer Username', // Placeholder for employer username
+                                    'R10/hr', // Placeholder for rate per hour
+                                    '2 hours', // Placeholder for hours
+                                    'Job description goes here.', // Placeholder for description
+                                    'Location', // Placeholder for location
+                                  );
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(12.0),
+                                  width: double.infinity,
+                                  height: 100.0, // Set height to 100
+                                  decoration: BoxDecoration(
+                                    color: AppColors.darkGreen,
+                                    borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
+                                  ),
+                                  child: Stack(
+                                    children: <Widget>[
+                                      Positioned(
+                                        top: 0,
+                                        left: 0,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                              'Job Title ${index + 1 - containersBeforeRecommendation - containersAfterRecommendation - 2}', // Job title
+                                              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
+                                            ),
+                                            SizedBox(height: 4.0),
+                                            Text(
+                                              'Employer Username', // Placeholder for employer username
+                                              style: TextStyle(color: Colors.black),
+                                            ),
+                                            SizedBox(height: 4.0),
+                                            Text(
+                                              'Location', // Placeholder for location
+                                              style: TextStyle(color: Colors.black),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Positioned(
+                                        right: 0,
+                                        top: 0,
+                                        child: Text(
+                                          'Wage: R10/hr', // Placeholder for wage per hour
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+
+                          // Default container
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 16.0, // Space between containers
+                              left: 16.0,  // Left padding
+                              right: 16.0, // Right padding
+                            ),
+                            child: GestureDetector(
+                              onTap: () {
+                                _showJobDetails(
+                                  context,
+                                  'Job Title ${index + 1}', // Job title
+                                  'Employer Username', // Placeholder for employer username
+                                  'R10/hr', // Placeholder for rate per hour
+                                  '2 hours', // Placeholder for hours
+                                  'Job description goes here.', // Placeholder for description
+                                  'Location', // Placeholder for location
+                                );
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(12.0),
+                                width: double.infinity,
+                                height: 100.0, // Set height to 100
+                                decoration: BoxDecoration(
+                                  color: AppColors.darkGreen,
+                                  borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
+                                ),
+                                child: Stack(
+                                  children: <Widget>[
+                                    Positioned(
+                                      top: 0,
+                                      left: 0,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                            'Job Title ${index + 1}', // Job title
+                                            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
+                                          ),
+                                          SizedBox(height: 4.0),
+                                          Text(
+                                            'Employer Username', // Placeholder for employer username
+                                            style: TextStyle(color: Colors.black),
+                                          ),
+                                          SizedBox(height: 4.0),
+                                          Text(
+                                            'Location', // Placeholder for location
+                                            style: TextStyle(color: Colors.black),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Positioned(
+                                      right: 0,
+                                      top: 0,
+                                      child: Text(
+                                        'Wage: R10/hr', // Placeholder for wage per hour
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Container(
-              color: Colors.green[200],
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextField(
-                      textAlignVertical: TextAlignVertical.center,
-                      textAlign: TextAlign.left,
-                      controller: _searchController,
-                      style: const TextStyle(color: Colors.white),
-                      cursorColor: Colors.brown,
-                      decoration: InputDecoration(
-                        hintText: 'Search...',
-                        hintStyle: TextStyle(color: Colors.brown),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: Colors.green, width: 2),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: Colors.brown, width: 1),
+            Expanded(
+              flex: 1,
+              child: Container(
+                color: Colors.green[200],
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextField(
+                        textAlignVertical: TextAlignVertical.center,
+                        textAlign: TextAlign.left,
+                        controller: _searchController,
+                        style: const TextStyle(color: Colors.white),
+                        cursorColor: Colors.brown,
+                        decoration: InputDecoration(
+                          hintText: 'Search...',
+                          hintStyle: TextStyle(color: Colors.brown),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.green, width: 2),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.brown, width: 1),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  _buildFilterButton('Location'),
-                  _buildFilterButton('Category'),
-                  _buildFilterButton('Availability'),
-                  _buildFilterButton('Type'),
-                ],
+                    _buildFilterButton('Location'),
+                    _buildFilterButton('Category'),
+                    _buildFilterButton('Availability'),
+                    _buildFilterButton('Type'),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -245,33 +508,33 @@ class _ListingPageState extends State<ListingPage> {
                         decoration: InputDecoration(
                           labelText: 'Title',
                           border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded corners
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded corners
-                                borderSide: BorderSide(color: Colors.brown, width: 2),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded corners
-                                borderSide: BorderSide(color: Colors.green, width: 1),
-                              ),
+                            borderRadius: BorderRadius.circular(12), // Rounded corners
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12), // Rounded corners
+                            borderSide: BorderSide(color: Colors.brown, width: 2),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12), // Rounded corners
+                            borderSide: BorderSide(color: Colors.green, width: 1),
+                          ),
                         ),
                       ),
                       SizedBox(height: 20),
                       TextField(
                         decoration: InputDecoration(
                           labelText: 'Location',
-                           border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded corners
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded corners
-                                borderSide: BorderSide(color: Colors.brown, width: 2),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded corners
-                                borderSide: BorderSide(color: Colors.green, width: 1),
-                              ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12), // Rounded corners
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12), // Rounded corners
+                            borderSide: BorderSide(color: Colors.brown, width: 2),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12), // Rounded corners
+                            borderSide: BorderSide(color: Colors.green, width: 1),
+                          ),
                         ),
                       ),
                       SizedBox(height: 20),
@@ -279,50 +542,50 @@ class _ListingPageState extends State<ListingPage> {
                         decoration: InputDecoration(
                           labelText: 'Category',
                           border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded corners
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded corners
-                                borderSide: BorderSide(color: Colors.brown, width: 2),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded corners
-                                borderSide: BorderSide(color: Colors.green, width: 1),
-                              ),
+                            borderRadius: BorderRadius.circular(12), // Rounded corners
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12), // Rounded corners
+                            borderSide: BorderSide(color: Colors.brown, width: 2),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12), // Rounded corners
+                            borderSide: BorderSide(color: Colors.green, width: 1),
+                          ),
                         ),
                       ),
                       SizedBox(height: 20),
                       TextField(
                         decoration: InputDecoration(
                           labelText: 'Availability',
-                           border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded corners
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded corners
-                                borderSide: BorderSide(color: Colors.brown, width: 2),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded corners
-                                borderSide: BorderSide(color: Colors.green, width: 1),
-                              ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12), // Rounded corners
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12), // Rounded corners
+                            borderSide: BorderSide(color: Colors.brown, width: 2),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12), // Rounded corners
+                            borderSide: BorderSide(color: Colors.green, width: 1),
+                          ),
                         ),
                       ),
                       SizedBox(height: 20),
                       TextField(
                         decoration: InputDecoration(
                           labelText: 'Type',
-                           border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded corners
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded corners
-                                borderSide: BorderSide(color: Colors.brown, width: 2),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded corners
-                                borderSide: BorderSide(color: Colors.green, width: 1),
-                              ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12), // Rounded corners
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12), // Rounded corners
+                            borderSide: BorderSide(color: Colors.brown, width: 2),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12), // Rounded corners
+                            borderSide: BorderSide(color: Colors.green, width: 1),
+                          ),
                         ),
                       ),
                       SizedBox(height: 20),
@@ -331,9 +594,9 @@ class _ListingPageState extends State<ListingPage> {
                           Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.lightGreen.withOpacity(0.9),
-                                    foregroundColor: Colors.brown,
-                                  ),
+                          backgroundColor: Colors.lightGreen.withOpacity(0.9),
+                          foregroundColor: Colors.brown,
+                        ),
                         child: Text('Submit'),
                       ),
                     ],
@@ -375,7 +638,3 @@ class _ListingPageState extends State<ListingPage> {
     );
   }
 }
-
-
-
-
