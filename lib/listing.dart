@@ -1,5 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'searchbar.dart';
+
+
 
 class ListingPage extends StatefulWidget {
   @override
@@ -7,12 +10,25 @@ class ListingPage extends StatefulWidget {
 }
 
 class _ListingPageState extends State<ListingPage> {
+  final TextEditingController _searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.brown,
         title: Text('QuickGigs', style: TextStyle(color: Colors.white)),
+         actions: <Widget>[
+    IconButton(
+      icon: Icon(
+        Icons.person,
+        color: Colors.white,
+      ),
+      onPressed: () {
+        // do something
+      },
+    )
+  ],      
       ),
       body: FractionallySizedBox(
         widthFactor: 1.0,
@@ -22,20 +38,41 @@ class _ListingPageState extends State<ListingPage> {
             Expanded(
               flex: 4,
               child: Container(
-                color: Colors.blue,
-                child: Center(child: Text('Column 1', style: TextStyle(color: Colors.white))),
+                color: Colors.green[50],
+                child: Center(child: Text('Column 1', style: TextStyle(color: Colors.black))),
               ),
             ),
             Expanded(
-              flex: 1,
-              child: Container(
-                color: Colors.green,
-                child: Center(child: Text('Column 2', style: TextStyle(color: Colors.white))),
-              ),
-            ),
+  flex: 1,
+  child: Container(
+    color: Colors.green[200],
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Column 2',
+          style: TextStyle(color: Colors.white),
+        ),
+        TextField(
+          controller: _searchController,
+          style: const TextStyle(color: Colors.white),
+          cursorColor: Colors.white,
+          decoration: const InputDecoration(
+            hintText: 'Search...',
+            hintStyle: TextStyle(color: Colors.white54),
+            border: InputBorder.none,
+          ),
+        ),
+      ],
+    ),
+  ),
+),
           ],
         ),
       ),
     );
   }
 }
+
+
+
