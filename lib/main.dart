@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       home: LandingPage(), // Set the landing page as the home screen
       // home: Payment(),
       // home: Review(),
-       home: Profile(),
+      // home: Profile(),
 
     );
   }
