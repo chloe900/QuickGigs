@@ -1,8 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'searchbar.dart';
-
-
+import 'colours.dart'; 
 
 class ListingPage extends StatefulWidget {
   @override
@@ -16,7 +14,7 @@ class _ListingPageState extends State<ListingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.brown,
+        backgroundColor: AppColors.brown,
         title: Text('QuickGigs', style: TextStyle(color: Colors.white)),
          actions: <Widget>[
     IconButton(
@@ -38,8 +36,8 @@ class _ListingPageState extends State<ListingPage> {
             Expanded(
               flex: 4,
               child: Container(
-                color: Colors.green[50],
-                child: Center(child: Text('Column 1', style: TextStyle(color: Colors.black))),
+                color: AppColors.yellow,
+                child: Center(child: Text('Column 1', style: TextStyle(color: Colors.white))),
               ),
             ),
             Expanded(
