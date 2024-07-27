@@ -20,9 +20,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'Nunito', // Set default font family
       ),
-      //home: LandingPage(), // Set the landing page as the home screen
+      home: LandingPage(), // Set the landing page as the home screen
       // home: Payment(),
-      home: Review(),
+      //home: Review(),
 
     );
   }
