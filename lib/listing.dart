@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 class ListingPage extends StatefulWidget {
@@ -14,38 +13,24 @@ class _ListingPageState extends State<ListingPage> {
       appBar: AppBar(
         backgroundColor: Colors.brown,
         title: Text('QuickGigs', style: TextStyle(color: Colors.white)),
-        actions: [
-          // Add actions here if needed
-        ],
       ),
-      body: Expanded(
+      body: FractionallySizedBox(
+        widthFactor: 1.0,
+        heightFactor: 1.0,
         child: Row(
           children: <Widget>[
             Expanded(
               flex: 4,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    color: Colors.blue,
-                    height: 100,
-                    width: double.infinity,
-                    child: Center(child: Text('Column 1', style: TextStyle(color: Colors.white))),
-                  ),
-                ],
+              child: Container(
+                color: Colors.blue,
+                child: Center(child: Text('Column 1', style: TextStyle(color: Colors.white))),
               ),
             ),
             Expanded(
               flex: 1,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    color: Colors.green,
-                    height: 100,
-                    width: double.infinity,
-                    child: Center(child: Text('Column 2', style: TextStyle(color: Colors.white))),
-                  ),
-                ],
+              child: Container(
+                color: Colors.green,
+                child: Center(child: Text('Column 2', style: TextStyle(color: Colors.white))),
               ),
             ),
           ],
