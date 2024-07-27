@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'colours.dart'; 
 
 class ListingPage extends StatefulWidget {
   @override
@@ -11,7 +12,7 @@ class _ListingPageState extends State<ListingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.brown,
+        backgroundColor: AppColors.brown,
         title: Text('QuickGigs', style: TextStyle(color: Colors.white)),
       ),
       body: FractionallySizedBox(
@@ -22,14 +23,14 @@ class _ListingPageState extends State<ListingPage> {
             Expanded(
               flex: 4,
               child: Container(
-                color: Colors.blue,
+                color: AppColors.yellow,
                 child: Center(child: Text('Column 1', style: TextStyle(color: Colors.white))),
               ),
             ),
             Expanded(
               flex: 1,
               child: Container(
-                color: Colors.green,
+                color: AppColors.darkGreen,
                 child: Center(child: Text('Column 2', style: TextStyle(color: Colors.white))),
               ),
             ),
