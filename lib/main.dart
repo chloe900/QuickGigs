@@ -3,6 +3,7 @@ import 'package:quick_gigs/payment/payment.dart';
 import 'signup/signup.dart';
 import 'signup/signin.dart';
 import 'misc_functions.dart';
+import 'review/review.dart';
 
 
 
@@ -19,7 +20,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'Nunito', // Set default font family
       ),
-      home: LandingPage(), // Set the landing page as the home screen
+      //home: LandingPage(), // Set the landing page as the home screen
+      // home: Payment(),
+      home: Review(),
+
     );
   }
 }

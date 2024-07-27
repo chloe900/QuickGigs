@@ -13,6 +13,7 @@ dependencies:
   url_launcher: ^6.0.20
   css_colors: ^1.1.5 
   cupertino_icons: ^1.0.6
+  flutter_rating_bar: ^4.0.0
 
 dev_dependencies:
   flutter_test:

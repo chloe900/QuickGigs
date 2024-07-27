@@ -6,9 +6,6 @@ class Payment extends StatefulWidget {
   _PaymentIntegrationState createState() => _PaymentIntegrationState();
 }
 
-  
-
-
 class _PaymentIntegrationState extends State<Payment> {
   String _selectedPaymentMethod = '';
 
