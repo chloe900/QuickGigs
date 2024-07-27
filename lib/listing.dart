@@ -37,7 +37,7 @@ class _ListingPageState extends State<ListingPage> {
               flex: 4,
               child: Container(
                 color: AppColors.yellow,
-                child: Center(child: Text('Column 1', style: TextStyle(color: Colors.white))),
+                child: Center(child: Text('', style: TextStyle(color: Colors.white))),
               ),
             ),
             Expanded(
@@ -45,22 +45,32 @@ class _ListingPageState extends State<ListingPage> {
   child: Container(
     color: Colors.green[200],
     child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          'Column 2',
-          style: TextStyle(color: Colors.white),
-        ),
-        TextField(
-          controller: _searchController,
-          style: const TextStyle(color: Colors.white),
-          cursorColor: Colors.white,
-          decoration: const InputDecoration(
-            hintText: 'Search...',
-            hintStyle: TextStyle(color: Colors.white54),
-            border: InputBorder.none,
+         Padding(
+          padding: const EdgeInsets.all(16.0), // Add padding to position the TextField
+          child: TextField(
+            textAlignVertical: TextAlignVertical.center,
+            textAlign: TextAlign.left,
+            controller: _searchController,
+            style: const TextStyle(color: Colors.white),
+            cursorColor: Colors.brown,
+            decoration: InputDecoration(
+              hintText: 'Search...',
+              hintStyle: TextStyle(color: Colors.brown),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12), // Rounded corners
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12), // Rounded corners
+                borderSide: BorderSide(color: Colors.green, width: 2),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12), // Rounded corners
+                borderSide: BorderSide(color: Colors.brown, width: 1),
+              ),
+            ),
           ),
-        ),
+         ),
       ],
     ),
   ),
