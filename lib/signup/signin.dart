@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'signup.dart';
+import '../listing.dart';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -14,6 +15,10 @@ class _SignInPageState extends State<SignInPage> {
     // Add sign-in logic here
     String email = _emailController.text;
     String password = _passwordController.text;
+     Navigator.push( //fix later - just needed to see what listing page looked like
+      context,
+      MaterialPageRoute(builder: (context) => ListingPage()),
+    );
     // Authenticate email and password
   }
 
