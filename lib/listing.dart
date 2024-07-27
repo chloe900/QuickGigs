@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:quick_gigs/profile/profile.dart';
 import 'colours.dart';
 
 class ListingPage extends StatefulWidget {
@@ -173,7 +174,10 @@ class _ListingPageState extends State<ListingPage> {
           IconButton(
             icon: Icon(Icons.person, color: Colors.white),
             onPressed: () {
-              // Handle user profile action
+               Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => Profile()),
+                              );
             },
           ),
         ],
@@ -452,7 +456,7 @@ class _ListingPageState extends State<ListingPage> {
             Expanded(
               flex: 1,
               child: Container(
-                color: Colors.green[200],
+                color: AppColors.lightGreen,
                 child: Column(
                   children: [
                     Padding(
