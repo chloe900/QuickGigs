@@ -18,7 +18,7 @@ class _PaymentIntegrationState extends State<Payment> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF7BC67B),
+        backgroundColor: Colors.brown,
         title: Text(
           'Payment',
           style: TextStyle(fontFamily: 'Nunito'),
