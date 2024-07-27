@@ -2,9 +2,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'colours.dart'; 
 
-
-import 'package:flutter/material.dart';
-
 class ListingPage extends StatefulWidget {
   @override
   _ListingPageState createState() => _ListingPageState();
@@ -31,6 +28,64 @@ class _ListingPageState extends State<ListingPage> {
                 child: Text('$title ${index + 1}', style: TextStyle(fontSize: 18)),
               ),
             )),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showDialog(String title) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(title, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                SizedBox(height: 20),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context); // Close the dialog
+                    // Add your selection handling logic here
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: Text('Option 1', style: TextStyle(fontSize: 18)),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context); // Close the dialog
+                    // Add your selection handling logic here
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: Text('Option 2', style: TextStyle(fontSize: 18)),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context); // Close the dialog
+                    // Add your selection handling logic here
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: Text('Option 3', style: TextStyle(fontSize: 18)),
+                  ),
+                ),
+                // Add more options as needed
+                SizedBox(height: 20),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Close the dialog
+                  },
+                  child: Text('Close'),
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -104,64 +159,120 @@ class _ListingPageState extends State<ListingPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showModalBottomSheet(
+          showDialog(
             context: context,
             builder: (context) {
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Text('Add a Job', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 20),
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Title',
-                        border: OutlineInputBorder(),
+              return Dialog(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text('Add a Job', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 20),
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Title',
+                          border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12), // Rounded corners
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12), // Rounded corners
+                                borderSide: BorderSide(color: Colors.brown, width: 2),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12), // Rounded corners
+                                borderSide: BorderSide(color: Colors.green, width: 1),
+                              ),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 20),
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Location',
-                        border: OutlineInputBorder(),
+                      SizedBox(height: 20),
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Location',
+                           border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12), // Rounded corners
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12), // Rounded corners
+                                borderSide: BorderSide(color: Colors.brown, width: 2),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12), // Rounded corners
+                                borderSide: BorderSide(color: Colors.green, width: 1),
+                              ),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 20),
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Category',
-                        border: OutlineInputBorder(),
+                      SizedBox(height: 20),
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Category',
+                          border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12), // Rounded corners
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12), // Rounded corners
+                                borderSide: BorderSide(color: Colors.brown, width: 2),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12), // Rounded corners
+                                borderSide: BorderSide(color: Colors.green, width: 1),
+                              ),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 20),
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Availabiltiy',
-                        border: OutlineInputBorder(),
+                      SizedBox(height: 20),
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Availability',
+                           border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12), // Rounded corners
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12), // Rounded corners
+                                borderSide: BorderSide(color: Colors.brown, width: 2),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12), // Rounded corners
+                                borderSide: BorderSide(color: Colors.green, width: 1),
+                              ),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 20),
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Type',
-                        border: OutlineInputBorder(),
+                      SizedBox(height: 20),
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Type',
+                           border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12), // Rounded corners
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12), // Rounded corners
+                                borderSide: BorderSide(color: Colors.brown, width: 2),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12), // Rounded corners
+                                borderSide: BorderSide(color: Colors.green, width: 1),
+                              ),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text('Submit'),
-                    ),
-                  ],
+                      SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.lightGreen.withOpacity(0.9),
+                                    foregroundColor: Colors.brown,
+                                  ),
+                        child: Text('Submit'),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
           );
         },
-        child: Text('Add Job', style: TextStyle(color: Colors.white),),
+        child: Text('Add Job', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.green,
       ),
     );
@@ -193,7 +304,6 @@ class _ListingPageState extends State<ListingPage> {
     );
   }
 }
-
 
 
 
