@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class Review extends StatefulWidget {
+class Review extends StatefulWidget 
+{
+  const Review({super.key});
+
   @override
   _ReviewPageState createState() => _ReviewPageState();
 }
 
-class _ReviewPageState extends State<Review> {
+class _ReviewPageState extends State<Review> 
+{
   final TextEditingController _reviewController = TextEditingController();
   double _rating = 0.0;
 
-  void _submitReview() {
+  void _submitReview() 
+  {
     // Add review submission logic here
     String review = _reviewController.text;
     double rating = _rating;
@@ -18,11 +23,12 @@ class _ReviewPageState extends State<Review> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)
+   {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.brown,
-        title: Text(
+        title: const Text(
           'Payment',
           style: TextStyle(fontFamily: 'Nunito'),
         ),
@@ -32,7 +38,7 @@ class _ReviewPageState extends State<Review> {
         children: [
           // Main content
           Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Row(
               children: [
                 // Left half with image and title
@@ -45,8 +51,8 @@ class _ReviewPageState extends State<Review> {
                         width: 450,
                         height: 450,
                       ),
-                      SizedBox(height: 20),
-                      Text('Job Reviews', style: TextStyle(fontSize: 34)),
+                      const SizedBox(height: 20),
+                      const Text('Job Reviews', style: TextStyle(fontSize: 34)),
                     ],
                   ),
                 ),
@@ -55,7 +61,7 @@ class _ReviewPageState extends State<Review> {
                   child: Center(
                     child: Container(
                       width: 400, // Increased width
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: Colors.white, // Background color
                         borderRadius: BorderRadius.circular(12), // Rounded corners
@@ -64,7 +70,7 @@ class _ReviewPageState extends State<Review> {
                             color: Colors.green.withOpacity(0.2),
                             spreadRadius: 5,
                             blurRadius: 7,
-                            offset: Offset(0, 3), // Shadow position
+                            offset: const Offset(0, 3), // Shadow position
                           ),
                         ],
                       ),
@@ -72,8 +78,8 @@ class _ReviewPageState extends State<Review> {
                         mainAxisSize: MainAxisSize.min, // Make column size minimal
                         mainAxisAlignment: MainAxisAlignment.center, // Center contents vertically
                         children: [
-                          Text('Write a Review', style: TextStyle(color: Colors.brown, fontSize: 40)),
-                          SizedBox(height: 20),
+                          const Text('Write a Review', style: TextStyle(color: Colors.brown, fontSize: 40)),
+                          const SizedBox(height: 20),
                           TextField(
                             controller: _reviewController,
                             maxLines: 5, // Increased size for the review text box
@@ -84,23 +90,23 @@ class _ReviewPageState extends State<Review> {
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12), // Rounded corners
-                                borderSide: BorderSide(color: Colors.brown, width: 2),
+                                borderSide: const BorderSide(color: Colors.brown, width: 2),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12), // Rounded corners
-                                borderSide: BorderSide(color: Colors.green, width: 1),
+                                borderSide: const BorderSide(color: Colors.green, width: 1),
                               ),
                             ),
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           RatingBar.builder(
                             initialRating: 0,
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: true,
                             itemCount: 5,
-                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                            itemBuilder: (context, _) => Icon(
+                            itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                            itemBuilder: (context, _) => const Icon(
                               Icons.star,
                               color: Colors.amber,
                             ),
@@ -110,7 +116,7 @@ class _ReviewPageState extends State<Review> {
                               });
                             },
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           Row(
                             children: [
                               Expanded(
@@ -120,7 +126,7 @@ class _ReviewPageState extends State<Review> {
                                     backgroundColor: Colors.lightGreen.withOpacity(0.9),
                                     foregroundColor: Colors.white,
                                   ),
-                                  child: Text('Submit'),
+                                  child: const Text('Submit'),
                                 ),
                               ),
                             ],
@@ -138,7 +144,7 @@ class _ReviewPageState extends State<Review> {
             top: 16.0,
             left: 16.0,
             child: IconButton(
-              icon: Icon(Icons.house, color: Colors.brown),
+              icon: const Icon(Icons.house, color: Colors.brown),
               onPressed: () {
                 Navigator.pop(context); // Navigate to the main landing page
               },
