@@ -1,36 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:quick_gigs/payment/payment.dart';
 import 'signup/signup.dart';
 import 'signup/signin.dart';
 import 'misc_functions.dart';
-import 'review/review.dart';
-import 'profile/profile.dart';
-
-
+import 'amplifyconfiguration.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    _configureAmplify();
+  }
+
+  void _configureAmplify() async {
+    try {
+      await Amplify.addPlugin(AmplifyAuthCognito());
+      await Amplify.configure(amplifyconfig);
+      print('Successfully configured');
+    } on Exception catch (e) {
+      print('Error configuring Amplify: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Quick Gigs',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        fontFamily: 'Nunito', // Set default font family
+        primarySwatch: Colors.green,
+        fontFamily: 'Nunito',
       ),
-      home: LandingPage(), // Set the landing page as the home screen
-      // home: Payment(),
-      // home: Review(),
-      // home: Profile(),
-
+      home: LandingPage(),
     );
   }
 }
 
-// Main landing page
 class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -41,14 +55,13 @@ class LandingPage extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () {
-              //actions
+              // Actions
             },
             child: Text('Home', style: TextStyle(color: Colors.white)),
           ),
           TextButton(
             onPressed: () {
-              //actions
-               Navigator.push(
+              Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => SignUpPage()),
               );
@@ -57,7 +70,7 @@ class LandingPage extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-               Navigator.push(
+              Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => SignInPage()),
               );
@@ -66,11 +79,10 @@ class LandingPage extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-               ContactUs.launchEmail(
+              ContactUs.launchEmail(
                 email: 'chloetdube@gmail.com',
                 subject: 'Contact Us Inquiry',
               );
-              
             },
             child: Text('Contact', style: TextStyle(color: Colors.white)),
           ),
@@ -85,12 +97,12 @@ class LandingPage extends StatelessWidget {
                 'images/howitworks.png',
                 width: 500,
                 height: 500,
-                alignment: Alignment(-0.5,-0.5),
+                alignment: Alignment(-0.5, -0.5),
               ),
               title: 'How It Works',
               color: const Color.fromRGBO(255, 249, 196, 1),
-              content: 'Learn how our app works and get started quickly.',
-              imageOnLeft: true, 
+              content: 'Jobs best suited for you show up on your home page. Or you can post jobs for others to do.',
+              imageOnLeft: true,
             ),
           ),
           Flexible(
@@ -98,7 +110,7 @@ class LandingPage extends StatelessWidget {
             child: Section(
               title: 'Why Choose Us',
               color: Colors.lightGreen,
-              content: 'Discover the benefits of using our app and why we stand out.',
+              content: 'QuickGigs connects you to jobs in near you that you can do for a quick buck.',
               image: Image.asset(
                 'images/whychooseus.png',
                 width: 500,
@@ -109,19 +121,21 @@ class LandingPage extends StatelessWidget {
           ),
           Flexible(
             flex: 2,
-           child: Section(
+            child: Section(
               image: Image.asset(
                 'images/getstarted.png',
                 width: 500,
                 height: 500,
-                alignment: Alignment(-0.5,-0.5),
+                alignment: Alignment(-0.5, -0.5),
               ),
               title: 'Get Started',
               color: const Color.fromRGBO(255, 249, 196, 1),
               content: 'Join QuickGigs and earn some extra coin.',
-              imageOnLeft: true, 
+              imageOnLeft: true,
             ),
+            
           ),
+
           Container(
             color: Colors.brown,
             padding: EdgeInsets.all(16.0),
@@ -142,4 +156,3 @@ class LandingPage extends StatelessWidget {
     );
   }
 }
-

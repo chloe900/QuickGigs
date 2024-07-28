@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quick_gigs/signup/signin.dart';
+import '../main.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -7,151 +10,265 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _surnameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _surnameController = TextEditingController();
+  final TextEditingController _verificationCodeController = TextEditingController();
 
-  void _signUp() {
-    // Add sign-up logic here
-    String name = _nameController.text;
-    String surname = _surnameController.text;
-    String email = _emailController.text;
-    String password = _passwordController.text;
-    // Authenticate and create account
+  bool _isVerificationCodeSent = false;
+  String _errorMessage = '';
+
+  Future<void> _signUp() async {
+    try {
+      Map<AuthUserAttributeKey, String> userAttributes = {
+        AuthUserAttributeKey.email: _emailController.text,
+        AuthUserAttributeKey.name: _nameController.text,
+        AuthUserAttributeKey.familyName: _surnameController.text,
+      };
+
+      SignUpResult result = await Amplify.Auth.signUp(
+        username: _emailController.text,
+        password: _passwordController.text,
+        options: SignUpOptions(userAttributes: userAttributes),
+      );
+
+      if (result.isSignUpComplete) {
+        print('Sign up successful');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SignInPage()),
+        );
+      } else {
+        setState(() {
+          _isVerificationCodeSent = true;
+        });
+        print('Sign up not complete, verification code sent');
+      }
+    } on AuthException catch (e) {
+      setState(() {
+        _errorMessage = e.message;
+      });
+      print('Error signing up: $e');
+    }
+  }
+
+  Future<void> _confirmSignUp() async {
+    try {
+      SignUpResult result = await Amplify.Auth.confirmSignUp(
+        username: _emailController.text,
+        confirmationCode: _verificationCodeController.text,
+      );
+
+      if (result.isSignUpComplete) {
+        print('Sign up confirmation successful');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SignInPage()),
+        );
+      } else {
+        print('Sign up confirmation not complete');
+      }
+    } on AuthException catch (e) {
+      setState(() {
+        _errorMessage = e.message;
+      });
+      print('Error confirming sign up: $e');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightGreen[50], // Background color of the page
+      backgroundColor: Colors.lightGreen[50],
       body: Stack(
         children: [
-          // Main content
-          Center(
-            child: Container(
-              width: 350, // Width of the container
-              padding: EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: Colors.white, // Background color of the container
-                borderRadius: BorderRadius.circular(12), // Rounded corners
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3), // Shadow position
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.max, // Minimize the column size
-                mainAxisAlignment: MainAxisAlignment.center, // Center contents vertically
-                children: [
-                  Text("Create an account", style: TextStyle(color: Colors.brown, fontSize: 30)),
-                  SizedBox(height: 10),
-                  TextField(
-                    controller: _nameController,
-                    decoration: InputDecoration(
-                      labelText: 'Name',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12), // Rounded corners
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12), // Rounded corners
-                        borderSide: BorderSide(color: Colors.brown, width: 2),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12), // Rounded corners
-                        borderSide: BorderSide(color: Colors.green, width: 1),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    controller: _surnameController,
-                    decoration: InputDecoration(
-                      labelText: 'Surname',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12), // Rounded corners
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12), // Rounded corners
-                        borderSide: BorderSide(color: Colors.brown, width: 2),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12), // Rounded corners
-                        borderSide: BorderSide(color: Colors.green, width: 1),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12), // Rounded corners
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12), // Rounded corners
-                        borderSide: BorderSide(color: Colors.brown, width: 2),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12), // Rounded corners
-                        borderSide: BorderSide(color: Colors.green, width: 1),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12), // Rounded corners
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12), // Rounded corners
-                        borderSide: BorderSide(color: Colors.brown, width: 2),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12), // Rounded corners
-                        borderSide: BorderSide(color: Colors.green, width: 1),
-                      ),
-                    ),
-                    obscureText: true,
-                  ),
-                  SizedBox(height: 20),
-                  Row(
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: _signUp,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.lightGreen.withOpacity(0.9), // Background color of the button
-                            foregroundColor: Colors.brown, // Text color
-                          ),
-                          child: Text('Create Account'),
-                        ),
+                      Image.asset(
+                        'images/login.png',
+                        width: 500,
+                        height: 500,
                       ),
+                      SizedBox(height: 20),
+                      Text('QuickGigs', style: TextStyle(fontSize: 34)),
                     ],
                   ),
-                  SizedBox(height: 10),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SignInPage()),
-                      );
-                    },
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.brown,
+                ),
+                Expanded(
+                  child: Center(
+                    child: Container(
+                      width: 300,
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.green.withOpacity(0.2),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Sign Up', style: TextStyle(color: Colors.brown, fontSize: 40)),
+                          SizedBox(height: 20),
+                          TextField(
+                            controller: _emailController,
+                            decoration: InputDecoration(
+                              labelText: 'Email',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(color: Colors.brown, width: 2),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(color: Colors.green, width: 1),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          TextField(
+                            controller: _passwordController,
+                            decoration: InputDecoration(
+                              labelText: 'Password',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(color: Colors.brown, width: 2),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(color: Colors.green, width: 1),
+                              ),
+                            ),
+                            obscureText: true,
+                          ),
+                          SizedBox(height: 10),
+                          TextField(
+                            controller: _nameController,
+                            decoration: InputDecoration(
+                              labelText: 'Name',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(color: Colors.brown, width: 2),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(color: Colors.green, width: 1),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          TextField(
+                            controller: _surnameController,
+                            decoration: InputDecoration(
+                              labelText: 'Surname',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(color: Colors.brown, width: 2),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(color: Colors.green, width: 1),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          if (_isVerificationCodeSent) ...[
+                            TextField(
+                              controller: _verificationCodeController,
+                              decoration: InputDecoration(
+                                labelText: 'Verification Code',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(color: Colors.brown, width: 2),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(color: Colors.green, width: 1),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: _confirmSignUp,
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.lightGreen.withOpacity(0.9),
+                                      foregroundColor: Colors.brown,
+                                    ),
+                                    child: Text('Confirm'),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ] else ...[
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: _signUp,
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.lightGreen.withOpacity(0.9),
+                                      foregroundColor: Colors.brown,
+                                    ),
+                                    child: Text('Sign Up'),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            style: TextButton.styleFrom(
+                              foregroundColor: Colors.brown,
+                            ),
+                            child: Text('Already have an account? Sign in'),
+                          ),
+                          if (_errorMessage.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Text(
+                                _errorMessage,
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            ),
+                        ],
+                      ),
                     ),
-                    child: Text('Already have an account? Sign in'),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           Positioned(
@@ -160,7 +277,7 @@ class _SignUpPageState extends State<SignUpPage> {
             child: IconButton(
               icon: Icon(Icons.house, color: Colors.brown),
               onPressed: () {
-                Navigator.pop(context); // Navigate to the main landing page
+                Navigator.pop(context);
               },
             ),
           ),
@@ -169,4 +286,3 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 }
-

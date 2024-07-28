@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'signup.dart';
 import '../listing.dart';
+import '../main.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -11,15 +14,24 @@ class _SignInPageState extends State<SignInPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  void _signIn() {
-    // Add sign-in logic here
-    String email = _emailController.text;
-    String password = _passwordController.text;
-     Navigator.push( //fix later - just needed to see what listing page looked like
-      context,
-      MaterialPageRoute(builder: (context) => ListingPage()),
-    );
-    // Authenticate email and password
+  Future<void> _signIn() async {
+    try {
+      SignInResult result = await Amplify.Auth.signIn(
+        username: _emailController.text,
+        password: _passwordController.text,
+      );
+      if (result.isSignedIn) {
+        print('Sign in successful');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ListingPage()),
+        );
+      } else {
+        print('Sign in not complete');
+      }
+    } on AuthException catch (e) {
+      print('Error signing in: $e');
+    }
   }
 
   @override
