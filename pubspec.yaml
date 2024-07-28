@@ -14,12 +14,17 @@ dependencies:
   css_colors: ^1.1.5 
   cupertino_icons: ^1.0.6
   flutter_rating_bar: ^4.0.0
+  amplify_flutter: ^2.3.0
+  amplify_auth_cognito: ^2.3.0
+  amplify_datastore: ^2.3.0
+  amplify_authenticator: ^2.1.1
   http: ^0.13.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
+
 
 flutter:
   assets:
