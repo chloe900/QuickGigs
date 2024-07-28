@@ -20,38 +20,44 @@ class _SignUpPageState extends State<SignUpPage> {
   String _errorMessage = '';
 
   Future<void> _signUp() async {
-    try {
-      Map<AuthUserAttributeKey, String> userAttributes = {
-        AuthUserAttributeKey.email: _emailController.text,
-        AuthUserAttributeKey.name: _nameController.text,
-        AuthUserAttributeKey.familyName: _surnameController.text,
-      };
+  try {
+    Map<AuthUserAttributeKey, String> userAttributes = {
+      AuthUserAttributeKey.email: _emailController.text,
+      AuthUserAttributeKey.name: _nameController.text,
+      AuthUserAttributeKey.familyName: _surnameController.text,
+    };
 
-      SignUpResult result = await Amplify.Auth.signUp(
-        username: _emailController.text,
-        password: _passwordController.text,
-        options: SignUpOptions(userAttributes: userAttributes),
+    SignUpResult result = await Amplify.Auth.signUp(
+      username: _emailController.text,
+      password: _passwordController.text,
+      options: SignUpOptions(userAttributes: userAttributes),
+    );
+
+    if (result.isSignUpComplete) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Sign up successful'),
+          backgroundColor: Colors.green,
+        ),
       );
-
-      if (result.isSignUpComplete) {
-        print('Sign up successful');
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => SignInPage()),
-        );
-      } else {
-        setState(() {
-          _isVerificationCodeSent = true;
-        });
-        print('Sign up not complete, verification code sent');
-      }
-    } on AuthException catch (e) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SignInPage()),
+      );
+    } else {
       setState(() {
-        _errorMessage = e.message;
+        _isVerificationCodeSent = true;
       });
-      print('Error signing up: $e');
+      print('Sign up not complete, verification code sent');
     }
+  } on AuthException catch (e) {
+    setState(() {
+      _errorMessage = e.message;
+    });
+    print('Error signing up: $e');
   }
+}
+
 
   Future<void> _confirmSignUp() async {
     try {

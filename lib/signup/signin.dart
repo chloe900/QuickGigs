@@ -13,6 +13,7 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  String _errorMessage = '';
 
   Future<void> _signIn() async {
     try {
@@ -27,9 +28,14 @@ class _SignInPageState extends State<SignInPage> {
           MaterialPageRoute(builder: (context) => ListingPage()),
         );
       } else {
-        print('Sign in not complete');
+        setState(() {
+          _errorMessage = 'Sign in not complete';
+        });
       }
     } on AuthException catch (e) {
+      setState(() {
+        _errorMessage = e.message;
+      });
       print('Error signing in: $e');
     }
   }
@@ -40,12 +46,10 @@ class _SignInPageState extends State<SignInPage> {
       backgroundColor: Colors.lightGreen[50],
       body: Stack(
         children: [
-          // Main content
           Padding(
             padding: EdgeInsets.all(16.0),
             child: Row(
               children: [
-                // Left half with image and title
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -60,27 +64,26 @@ class _SignInPageState extends State<SignInPage> {
                     ],
                   ),
                 ),
-                // Right half with login elements
                 Expanded(
                   child: Center(
                     child: Container(
-                      width: 300, // Fixed width
+                      width: 300,
                       padding: EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.white, // Background color
-                        borderRadius: BorderRadius.circular(12), // Rounded corners
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.green.withOpacity(0.2),
                             spreadRadius: 5,
                             blurRadius: 7,
-                            offset: Offset(0, 3), // Shadow position
+                            offset: Offset(0, 3),
                           ),
                         ],
                       ),
                       child: Column(
-                        mainAxisSize: MainAxisSize.max, // Make column size minimal
-                        mainAxisAlignment: MainAxisAlignment.center, // Center contents vertically
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text('Login', style: TextStyle(color: Colors.brown, fontSize: 40)),
                           SizedBox(height: 20),
@@ -89,14 +92,14 @@ class _SignInPageState extends State<SignInPage> {
                             decoration: InputDecoration(
                               labelText: 'Email',
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded corners
+                                borderRadius: BorderRadius.circular(12),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded corners
+                                borderRadius: BorderRadius.circular(12),
                                 borderSide: BorderSide(color: Colors.brown, width: 2),
                               ),
                               enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded corners
+                                borderRadius: BorderRadius.circular(12),
                                 borderSide: BorderSide(color: Colors.green, width: 1),
                               ),
                             ),
@@ -107,14 +110,14 @@ class _SignInPageState extends State<SignInPage> {
                             decoration: InputDecoration(
                               labelText: 'Password',
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded corners
+                                borderRadius: BorderRadius.circular(12),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded corners
+                                borderRadius: BorderRadius.circular(12),
                                 borderSide: BorderSide(color: Colors.brown, width: 2),
                               ),
                               enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded corners
+                                borderRadius: BorderRadius.circular(12),
                                 borderSide: BorderSide(color: Colors.green, width: 1),
                               ),
                             ),
@@ -147,6 +150,14 @@ class _SignInPageState extends State<SignInPage> {
                             ),
                             child: Text('New User? Sign up'),
                           ),
+                          if (_errorMessage.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Text(
+                                _errorMessage,
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            ),
                         ],
                       ),
                     ),
@@ -155,14 +166,13 @@ class _SignInPageState extends State<SignInPage> {
               ],
             ),
           ),
-          // House icon button at the top left corner
           Positioned(
             top: 16.0,
             left: 16.0,
             child: IconButton(
               icon: Icon(Icons.house, color: Colors.brown),
               onPressed: () {
-                Navigator.pop(context); // Navigate to the main landing page
+                Navigator.pop(context);
               },
             ),
           ),
@@ -171,4 +181,5 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 }
+
 

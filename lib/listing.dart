@@ -1,9 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'fetchGigs.dart'; // Import the fetchGigs.dart file
-import 'fetch_model.dart'; // Import the job_model.dart file
+import 'fetchGigs.dart'; 
+import 'fetch_model.dart'; 
 import 'colours.dart'; // Import your colors file
 import 'profile/profile.dart';
+import 'package:quick_gigs/signup/signin.dart';
+import '../main.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
 class ListingPage extends StatefulWidget {
   @override
@@ -30,8 +34,8 @@ class _ListingPageState extends State<ListingPage> {
             mainAxisSize: MainAxisSize.min,
             children: List.generate(3, (index) => GestureDetector(
               onTap: () {
-                Navigator.pop(context); // Close the modal
-                // Add your selection handling logic here
+                Navigator.pop(context); 
+                // selection handling logic here
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -184,6 +188,21 @@ class _ListingPageState extends State<ListingPage> {
                               );
             },
           ),
+         IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () async {
+            try {
+              await Amplify.Auth.signOut();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SignInPage()),
+              );
+            } catch (e) {
+              print('Error signing out: $e');
+            }
+          },
+)
+
         ],
       ),
 body: FractionallySizedBox(
@@ -397,7 +416,7 @@ body: FractionallySizedBox(
                       SizedBox(height: 20),
                       TextField(
                         decoration: InputDecoration(
-                          labelText: 'Location',
+                          labelText: 'Province',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12), // Rounded corners
                           ),
