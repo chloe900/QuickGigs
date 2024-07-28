@@ -1,9 +1,83 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'fetchGigs.dart'; // Import the fetchGigs.dart file
-import 'fetch_model.dart'; // Import the job_model.dart file
 import 'colours.dart'; // Import your colors file
 import 'profile/profile.dart';
+import 'package:aws_dynamodb_api/dynamodb-2012-08-10.dart' as aws_dynamodb_api;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+Future<void> main() async {
+  await dotenv.load();
+}
+
+final _credentials = aws_dynamodb_api.AwsClientCredentials(
+  accessKey: dotenv.env['AWS_ACCESS_KEY_ID']!,
+  secretKey: dotenv.env['AWS_SECRET_ACCESS_KEY']!,
+);
+
+final _dynamoDb = aws_dynamodb_api.DynamoDB(
+  region: 'us-west-1',
+  credentials: _credentials,
+);
+
+class Job {
+  final double jobId;
+  final String title;
+  final String description;
+  final double ratePerHour;
+  final String date;
+  final String location;
+  final String category;
+  final String status;
+  final double userID;
+
+  Job({
+    required this.jobId,
+    required this.title,
+    required this.description,
+    required this.ratePerHour,
+    required this.date,
+    required this.location,
+    required this.category,
+    required this.status,
+    required this.userID,
+  });
+
+  factory Job.fromMap(Map<String, aws_dynamodb_api.AttributeValue> map) {
+    double parseDouble(aws_dynamodb_api.AttributeValue attribute) {
+      return attribute.n != null ? double.parse(attribute.n!) : 0.0;
+    }
+
+    String parseString(aws_dynamodb_api.AttributeValue attribute) {
+      return attribute.s ?? '';
+    }
+
+    return Job(
+      jobId: parseDouble(map['JobID']!),
+      title: parseString(map['Title']!),
+      description: parseString(map['Description']!),
+      ratePerHour: parseDouble(map['R/hr']!),
+      date: parseString(map['Dates_Posted']!),
+      location: parseString(map['Location']!),
+      category: parseString(map['Category']!),
+      status: parseString(map['Status']!),
+      userID: parseDouble(map['UserID']!),
+    );
+  }
+}
+
+Future<List<Job>> fetchJobs() async {
+  try {
+    final response = await _dynamoDb.scan(tableName: 'Gigs');
+    if (response.items == null) {
+      throw Exception('No items found in response');
+    }
+
+    return response.items!.map((item) => Job.fromMap(item)).toList();
+  } catch (e) {
+    print('Error fetching jobs: $e'); // Logging the error
+    return []; // Return an empty list on error
+  }
+}
 
 class ListingPage extends StatefulWidget {
   @override
@@ -16,7 +90,7 @@ class _ListingPageState extends State<ListingPage> {
 
   @override
   void initState() {
-  super.initState();
+    super.initState();
     _jobsFuture = fetchJobs(); // Fetch jobs when the widget is initialized
   }
 
@@ -128,11 +202,9 @@ class _ListingPageState extends State<ListingPage> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                   ),
                   SizedBox(height: 16.0),
-                  Text('Employer: ${job.employer}'),
+                  Text('Employer: ${job.userID}'),
                   SizedBox(height: 8.0),
-                  Text('Rate per Hour: ${job.rate}'),
-                  SizedBox(height: 8.0),
-                  Text('Hours: ${job.hours}'),
+                  Text('Rate per Hour: ${job.ratePerHour}'),
                   SizedBox(height: 8.0),
                   Text('Description: ${job.description}'),
                   SizedBox(height: 8.0),
@@ -178,15 +250,15 @@ class _ListingPageState extends State<ListingPage> {
           IconButton(
             icon: Icon(Icons.person, color: Colors.white),
             onPressed: () {
-               Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => Profile()),
-                              );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Profile()),
+              );
             },
           ),
         ],
       ),
-body: FractionallySizedBox(
+      body: FractionallySizedBox(
         widthFactor: 1.0,
         heightFactor: 1.0,
         child: Row(
@@ -225,10 +297,9 @@ body: FractionallySizedBox(
                           } else {
                             final jobs = snapshot.data!;
                             return ListView.builder(
-                              itemCount: jobs.length + 7, // Additional items for headings and spacing
+                              itemCount: jobs.length + 3, // Additional items for headings and spacing
                               itemBuilder: (context, index) {
-                                if (index == jobs.length + 1) {
-                                  // "Recommendation" text
+                                if (index == 0) {
                                   return Padding(
                                     padding: const EdgeInsets.all(16.0),
                                     child: Text(
@@ -242,14 +313,12 @@ body: FractionallySizedBox(
                                   );
                                 }
 
-                                if (index == jobs.length + 2) {
-                                  // Empty space before recommendations
+                                if (index == 1) {
                                   return SizedBox(height: 16.0);
                                 }
 
-                                // Display job boxes
-                                if (index < jobs.length + 1) {
-                                  final job = jobs[index - 1];
+                                if (index - 2 < jobs.length) {
+                                  final job = jobs[index - 2];
                                   return Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: GestureDetector(
@@ -293,26 +362,21 @@ body: FractionallySizedBox(
                                   );
                                 }
 
-                                // Display recommendation after every 3 jobs
-                                if ((index - jobs.length - 2) % 4 == 0) {
-                                  return Padding(
+                                return Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Container(
+                                    color: AppColors.brown,
                                     padding: const EdgeInsets.all(16.0),
-                                    child: Container(
-                                      color: AppColors.brown,
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: Text(
-                                        'Recommendation',
-                                        style: TextStyle(
-                                          color: AppColors.textBlack,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20,
-                                        ),
+                                    child: Text(
+                                      'Recommendation',
+                                      style: TextStyle(
+                                        color: AppColors.textBlack,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                  );
-                                }
-
-                                return SizedBox.shrink(); // Default case
+                                  ),
+                                );
                               },
                             );
                           }

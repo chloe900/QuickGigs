@@ -1,24 +1,38 @@
-// fetchGigs.dart
-import 'dart:convert'; // If you're fetching from a JSON API
-import 'package:http/http.dart' as http;
-import 'fetch_model.dart';
+class Job {
+  final String jobId;
+  final String title;
+  final String description;
+  final double ratePerHour;
+  final String date;
+  final String location;
 
-Future<List<Job>> fetchJobs() async {
-  // Replace with your API endpoint
-  final response = await http.get(Uri.parse('https://4cjqsw6pm8.execute-api.us-west-1.amazonaws.com/dev'));
+  Job({
+    required this.jobId,
+    required this.title,
+    required this.description,
+    required this.ratePerHour,
+    required this.date,
+    required this.location,
+  });
 
-if (response.statusCode == 200) {
-  List jsonResponse = json.decode(response.body);
-  return jsonResponse.map((job) => Job(
-    title: job['title'] ?? 'N/A',
-    employer: job['employer'] ?? 'N/A',
-    rate: job['rate'] ?? 'N/A',
-    hours: job['hours'] ?? 'N/A',
-    description: job['description'] ?? 'N/A',
-    location: job['location'] ?? 'N/A',
-  )).toList();
-} else {
-  throw Exception('Failed to load jobs: ${response.reasonPhrase}');
+  factory Job.fromMap(Map<String, dynamic> map) {
+    return Job(
+      jobId: map['JobID']['S'] as String,
+      title: map['Title']['S'] as String,
+      description: map['Description']['S'] as String,
+      ratePerHour: double.parse(map['R/hr']['N']),
+      date: map['Date']['S'] as String,
+      location: map['Location']['S'] as String,
+    );
+  }
 }
 
+Future<List<Job>> fetchJobs() async {
+  final response = await _dynamoDb.scan(ScanInput(
+    tableName: 'YourTableName',
+  ));
+
+  return response.items!
+      .map((item) => Job.fromMap(item))
+      .toList();
 }

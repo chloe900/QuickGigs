@@ -21,6 +21,7 @@ dependencies:
   http: ^0.13.3
   aws_dynamodb_api: ^2.0.0
   aws_client: ^0.6.0
+  flutter_dotenv: ^5.0.2
 
 dev_dependencies:
   flutter_test:
