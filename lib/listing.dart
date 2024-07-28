@@ -4,6 +4,9 @@ import 'colours.dart'; // Import your colors file
 import 'profile/profile.dart';
 import 'package:aws_dynamodb_api/dynamodb-2012-08-10.dart' as aws_dynamodb_api;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'signup/signin.dart';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 
 Future<void> main() async {
   await dotenv.load();
